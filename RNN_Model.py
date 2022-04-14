@@ -27,9 +27,9 @@ def prepare_dataset(test_size , validation_size):
     X_train , X_validation , Y_train , Y_validation = train_test_split( X_train , Y_train , test_size=validation_size)
 
     # Only for CNN , we don't need it for RNN 
-    X_train = X_train[... , np.newaxis]
-    X_test = X_test[... , np.newaxis]
-    X_validation = X_validation[... , np.newaxis]
+    # X_train = X_train[... , np.newaxis]
+    # X_test = X_test[... , np.newaxis]
+    # X_validation = X_validation[... , np.newaxis]
 
     return X_train , X_validation , X_test , Y_train , Y_validation , Y_test
 
@@ -39,32 +39,40 @@ def build_model(input_shape):
     model = keras.Sequential()
 
     #layer conv2d - 1
-    model.add(keras.layers.Conv2D(32 , (3 , 3 ) ,activation = 'relu' , input_shape = input_shape ) )
+    # model.add(keras.layers.Conv2D(32 , (3 , 3 ) ,activation = 'relu' , input_shape = input_shape ) )
     
-    model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
+    # model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
 
-    model.add(keras.layers.BatchNormalization())
+    # model.add(keras.layers.BatchNormalization())
 
-    #layer conv2d -2 
-    model.add(keras.layers.Conv2D(32 , (2 , 2) ,activation = 'relu' , input_shape = input_shape ) )
+    # #layer conv2d -2 
+    # model.add(keras.layers.Conv2D(32 , (2 , 2) ,activation = 'relu' , input_shape = input_shape ) )
     
-    model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
+    # model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
 
-    model.add(keras.layers.BatchNormalization())
+    # model.add(keras.layers.BatchNormalization())
 
-    #layer conv2d -3 
-    model.add(keras.layers.Conv2D(32 , (2 , 2) ,activation = 'relu' , input_shape = input_shape ) )
+    # #layer conv2d -3 
+    # model.add(keras.layers.Conv2D(32 , (2 , 2) ,activation = 'relu' , input_shape = input_shape ) )
     
-    model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
+    # model.add(keras.layers.MaxPool2D((3,3) , strides=(2,2) , padding='same') )
 
-    model.add(keras.layers.BatchNormalization())
+    # model.add(keras.layers.BatchNormalization())
 
-    #flatten the output and feed it into dense layers 
-    model.add(keras.layers.Flatten())
+    # #flatten the output and feed it into dense layers 
+    # model.add(keras.layers.Flatten())
 
-    model.add(keras.layers.Dense(64 , activation='relu' ))
+    # model.add(keras.layers.Dense(64 , activation='relu' ))
 
-    model.add(keras.layers.Dropout(0.3)) 
+    # model.add(keras.layers.Dropout(0.3)) 
+
+
+    # LSTM Layers 
+    model.add(keras.layers.LSTM(64 , input_shape=input_shape , return_sequences=True))
+    model.add(keras.layers.LSTM(64))
+
+    model.add(keras.layers.Dense(64,activation='relu'))
+    model.add(keras.layers.Dropout(0.3))
 
     #output layer 
 
@@ -92,7 +100,7 @@ if __name__ == "__main__":
     X_train , X_validation , X_test , Y_train , Y_validation , Y_test = prepare_dataset(0.25 , 0.2)
 
     #Build the CNN Model 
-    Input_shape = (X_train.shape[1] , X_train.shape[2] , X_train.shape[3]   )
+    Input_shape = (X_train.shape[1] , X_train.shape[2]  )
 
     model = build_model(Input_shape)
 
